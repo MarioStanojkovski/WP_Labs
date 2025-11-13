@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<h2>Edit or delete a Author-:</h2>
+<div th:each="author : ${authors}" style="text-align: center">
+    <div class="book-option">
+        AuthorName: <span th:text="${author.getName()}"></span> | LastName: <span th:text="${author.getSurname()}"></span> | Bio: <span
+            th:text="${author.getBiography()}"></span> | C: <span
+            th:text="${author.getCountry()} + ' Gender' + ${author.getGenderenum()}"></span>
+        <div class="book-actions">
+            <a th:href="@{'/author/edit-form/{id}' (id=${author.id})}" class="btn btn-sm btn-info">
+                <i class="fas fa-pencil-alt"></i> Edit
+            </a>
+            <form th:action="@{'/author/delete/{id}' (id=${author.id})}" th:method="DELETE" style="display: inline;">
+                <button type="submit" class="btn btn-sm btn-danger">
+                    <i class="fas fa-trash"></i> Delete
+                </button>
+            </form>
+        </div>
+    </div>
+</div>
+<a href="/author/add-form" class="btn btn-dark btn-lg w-100 mb-3">
+    Add new author
+</a>
+</body>
+</html>

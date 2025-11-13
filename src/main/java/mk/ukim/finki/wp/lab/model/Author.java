@@ -1,0 +1,25 @@
+package mk.ukim.finki.wp.lab.model;
+
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import mk.ukim.finki.wp.lab.model.enums.Genderenum;
+
+@Data
+@AllArgsConstructor
+public class Author {
+    private Long id;
+    private String name;
+    private String surname;
+    private String country;
+    private String biography;
+    private Genderenum genderenum;
+    public Author(String name, String surname,String country,String biography,Genderenum genderenum) {
+        this.id = (long) (Math.random() * 1000);
+        this.name = name;
+        this.surname = surname;
+        this.country = country;
+        this.biography = biography;
+        this.genderenum=genderenum;
+    }
+
+}
