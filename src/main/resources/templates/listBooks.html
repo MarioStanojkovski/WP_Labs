@@ -59,12 +59,39 @@
 <main>
     <h2>Search a book</h2>
 
-    <form action="/book" method="GET">
+    <form action="/books" method="GET">
         <input type="text" name="title">
         <input type="number" name="rating">
-        <input type="submit" name="submit">
+        <input type="submit" name="Search">
     </form>
+    <h2>Search a book by authors:</h2>
 
+    <form action="/books/search_author" method="GET">
+        <div>
+            <label for="authorId">Author</label><br/>
+            <select id="authorId" name="authorId" required>
+                <option th:each="author : ${authors}"
+                        th:value="${author.id}"
+                        th:text="${author.getName()}+' '+${author.getSurname()}"
+                        th:selected="${book != null && book.author == author}">
+            </select>
+            <input type="submit" name="Search">
+        </div>
+    </form>
+    <h2>Search a book by genre:</h2>
+
+    <form action="/books/search_genre" method="GET">
+        <div>
+            <label for="genreId">Author</label><br/>
+            <select id="genreId" name="genreId" required>
+                <option th:each="genre : ${genres}"
+                        th:value="${genre.id}"
+                        th:text="${genre.getName()}"
+                        th:selected="${book != null && book.genre == genre}">
+            </select>
+            <input type="submit" name="Search">
+        </div>
+    </form>
     <a href="/books/add-form" class="btn btn-dark btn-lg w-100 mb-3">
         Add new book
     </a>
@@ -72,7 +99,7 @@
     <h2>Edit or delete a book-:</h2>
     <div th:each="book : ${books}" style="text-align: center">
         <div class="book-option">
-            Title: <span th:text="${book.title}"></span> | Genre: <span th:text="${book.genre}"></span> | Rating: <span
+            Title: <span th:text="${book.title}"></span> | Genre: <span th:text="${book.genre.name}"></span> | Rating: <span
                 th:text="${book.averageRating}"></span> | Author: <span
                 th:text="${book.author.name} + ' ' + ${book.author.surname}"></span>
             <div class="book-actions">
@@ -101,7 +128,7 @@
                        required>
                 <label th:for="'book_' + ${iterStat.index}">
                     Title: <span th:text="${book.title}"></span> |
-                    Genre: <span th:text="${book.genre}"></span> |
+                    Genre: <span th:text="${book.genre.name}"></span> |
                     Rating: <span th:text="${book.averageRating}"></span> |
                     Author: <span th:text="${book.author.name} + ' ' + ${book.author.surname}"></span>
                 </label>

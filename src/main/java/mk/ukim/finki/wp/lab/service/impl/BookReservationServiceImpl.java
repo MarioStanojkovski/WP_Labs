@@ -2,8 +2,7 @@ package mk.ukim.finki.wp.lab.service.impl;
 
 import mk.ukim.finki.wp.lab.model.Author;
 import mk.ukim.finki.wp.lab.model.BookReservation;
-import mk.ukim.finki.wp.lab.model.exceptions.BookNotFoundException;
-import mk.ukim.finki.wp.lab.repository.BookReservationRepository;
+import mk.ukim.finki.wp.lab.repository.mock.BookReservationRepository;
 import mk.ukim.finki.wp.lab.service.BookReservationService;
 import org.springframework.stereotype.Service;
 

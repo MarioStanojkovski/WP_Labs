@@ -2,7 +2,7 @@ package mk.ukim.finki.wp.lab.service.impl;
 import mk.ukim.finki.wp.lab.model.exceptions.InvalidArgumentsException;
 import mk.ukim.finki.wp.lab.model.exceptions.InvalidUserCredentialsException;
 import mk.ukim.finki.wp.lab.model.exceptions.PasswordsDoNotMatchException;
-import mk.ukim.finki.wp.lab.repository.UserRepository;
+import mk.ukim.finki.wp.lab.repository.mock.UserRepository;
 import mk.ukim.finki.wp.lab.model.User;
 import mk.ukim.finki.wp.lab.service.AuthService;
 import org.springframework.stereotype.Service;
