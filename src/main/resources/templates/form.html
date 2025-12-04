@@ -27,7 +27,7 @@
         <select id="genreId" name="genreId" required>
             <option th:each="genre : ${genres}"
                     th:value="${genre.id}"
-                    th:text="${genre.getName()}+' '+${genre.getDescription()}"
+                    th:text="${genre.getName()}"
                     th:selected="${book != null && book.genre == genre}">
         </select>
     </div>

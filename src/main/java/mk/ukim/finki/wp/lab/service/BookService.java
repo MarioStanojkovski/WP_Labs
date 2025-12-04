@@ -2,6 +2,7 @@ package mk.ukim.finki.wp.lab.service;
 
 import mk.ukim.finki.wp.lab.model.Author;
 import mk.ukim.finki.wp.lab.model.Book;
+import org.springframework.data.domain.Page;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.List;
@@ -28,4 +29,6 @@ public interface BookService {
 
     void delete(Long id);
     List<Book> searchBooksbyGenres (Long genreId);
+    Page<Book> find(String title,Long authorId, Long genreId, Integer pageNum, Integer pageSize);
+
 }

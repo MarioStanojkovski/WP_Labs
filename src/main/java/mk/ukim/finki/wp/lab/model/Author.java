@@ -25,8 +25,8 @@ public class Author {
     private String biography;
     private Genderenum genderenum;
 
-    @OneToMany(mappedBy = "author")
-    private List<Book> books;
+//    @OneToMany(mappedBy = "author")
+//    private List<Book> books;
 
     public Author(String name, String surname,String country,String biography,Genderenum genderenum) {
         this.name = name;

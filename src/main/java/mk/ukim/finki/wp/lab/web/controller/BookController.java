@@ -1,8 +1,10 @@
 package mk.ukim.finki.wp.lab.web.controller;
 
+import mk.ukim.finki.wp.lab.model.Book;
 import mk.ukim.finki.wp.lab.service.AuthorService;
 import mk.ukim.finki.wp.lab.service.BookReservationService;
 import mk.ukim.finki.wp.lab.service.GenreService;
+import org.springframework.data.domain.Page;
 import org.springframework.ui.Model;
 import mk.ukim.finki.wp.lab.service.BookService;
 import org.springframework.stereotype.Controller;
@@ -23,24 +25,47 @@ public class BookController {
         this.genreService = genreService;
     }
 
-    @GetMapping
-    public String getBooksPage(
+    //    @GetMapping
+//    public String getBooksPage(
+//            @RequestParam(required = false) String error,
+//            @RequestParam(required = false) String title,
+//            @RequestParam(required = false) String rating,
+//            Model model) {
+//
+//        Double rating1;
+//        try {
+//            rating1 = Double.parseDouble(rating);
+//        } catch (RuntimeException e) {
+//            rating1 = null;
+//        }
+//
+//        model.addAttribute("reservations", bookReservationService.findAllReservations());
+//        model.addAttribute("books", bookService.searchBooks(title, rating1));
+//        model.addAttribute("authors", authorService.findAll());
+//        model.addAttribute("genres", genreService.listAll());
+//        return "listBooks";
+//    }
+    @GetMapping()
+    public String getBooks(
             @RequestParam(required = false) String error,
             @RequestParam(required = false) String title,
-            @RequestParam(required = false) String rating,
-            Model model) {
-
-        Double rating1;
-        try {
-            rating1 = Double.parseDouble(rating);
-        } catch (RuntimeException e) {
-            rating1 = null;
+            @RequestParam(required = false) Long authorId,
+            @RequestParam(required = false) Long genreId,
+            @RequestParam(defaultValue = "1") Integer pageNum,
+            @RequestParam(defaultValue = "10") Integer pageSize,
+            Model model
+    ) {
+        if (error != null) {
+            model.addAttribute("error", error);
         }
 
-        model.addAttribute("reservations", bookReservationService.findAllReservations());
-        model.addAttribute("books", bookService.searchBooks(title, rating1));
+        Page<Book> books = bookService.find(title, authorId, genreId, pageNum, pageSize);
+        model.addAttribute("page", books);
+        model.addAttribute("title", title);
+        model.addAttribute("genreId", genreId);
         model.addAttribute("authors", authorService.findAll());
         model.addAttribute("genres", genreService.listAll());
+
         return "listBooks";
     }
 
@@ -58,6 +83,7 @@ public class BookController {
         model.addAttribute("genres", genreService.listAll());
         return "listBooks";
     }
+
     @GetMapping("/search_genre")
     public String getpagege_by_genre(
             Model model,
@@ -76,6 +102,7 @@ public class BookController {
     @GetMapping("/add-form")
     public String addBookPage(Model model) {
         model.addAttribute("authors", authorService.findAll());
+        model.addAttribute("genres", genreService.listAll());
         return "form";
     }
 

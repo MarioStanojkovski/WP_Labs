@@ -3,6 +3,7 @@ package mk.ukim.finki.wp.lab.service.impl;
 import mk.ukim.finki.wp.lab.model.Author;
 import mk.ukim.finki.wp.lab.model.Book;
 import mk.ukim.finki.wp.lab.model.Genre;
+import mk.ukim.finki.wp.lab.service.FieldFilterSpecification;
 import mk.ukim.finki.wp.lab.model.exceptions.AuthorNotFoundException;
 import mk.ukim.finki.wp.lab.model.exceptions.BookNotFoundException;
 import mk.ukim.finki.wp.lab.model.exceptions.GenreNotFoundException;
@@ -10,10 +11,17 @@ import mk.ukim.finki.wp.lab.repository.jpa.AuthorRepository;
 import mk.ukim.finki.wp.lab.repository.jpa.BookRepository;
 import mk.ukim.finki.wp.lab.repository.jpa.GenreRepository;
 import mk.ukim.finki.wp.lab.service.BookService;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
+
+import static mk.ukim.finki.wp.lab.service.FieldFilterSpecification.filterContainsText;
+import static mk.ukim.finki.wp.lab.service.FieldFilterSpecification.filterEquals;
 
 @Service
 public class BookServiceImpl implements BookService {
@@ -87,5 +95,18 @@ public class BookServiceImpl implements BookService {
     public void delete(Long id) {
         Book book = bookRepository.findById(id).orElseThrow(() -> new BookNotFoundException(id));
         bookRepository.deleteById(id);
+    }
+
+    @Override
+    public Page<Book> find(String title,Long authorId, Long genreId, Integer pageNum, Integer pageSize) {
+        Specification<Book> specification = Specification.allOf(
+                filterContainsText(Book.class, "title", title),
+                filterEquals(Book.class, "author.id", authorId),
+                filterEquals(Book.class, "genre.id", genreId)
+        );
+
+        return this.bookRepository.findAll(
+                specification,
+                PageRequest.of(pageNum - 1, pageSize, Sort.by(Sort.Direction.DESC, "title")));
     }
 }
