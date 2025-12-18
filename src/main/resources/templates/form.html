@@ -22,7 +22,6 @@
            required>
 
     <div>
-        <!--        @RequestParam Long genreId,-->
         <label for="genreId">Genre</label><br/>
         <select id="genreId" name="genreId" required>
             <option th:each="genre : ${genres}"
@@ -44,10 +43,6 @@
 
 
     <div>
-        <!--        @RequestParam String title,-->
-        <!--        @RequestParam String genre,-->
-        <!--        @RequestParam double averageRating,-->
-        <!--        @RequestParam Long authorId    mn E BITNO IMETO VO REQ KAKO GO POBARUVAME TAKA I VO NAME TREVADA E-->
         <label for="authorId">Author</label><br/>
         <select id="authorId" name="authorId" required>
             <option th:each="author : ${authors}"

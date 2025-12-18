@@ -3,6 +3,7 @@ package mk.ukim.finki.wp.lab.service;
 import mk.ukim.finki.wp.lab.model.Author;
 import mk.ukim.finki.wp.lab.model.Book;
 import mk.ukim.finki.wp.lab.model.enums.Genderenum;
+import org.springframework.data.domain.Page;
 
 import java.util.List;
 import java.util.Optional;
@@ -18,4 +19,5 @@ public interface AuthorService  {
 
     Author create(String name, String surname, String country, String biography, Genderenum gender);
 
+    Page<Author> find(String name, String surname, String country,Genderenum genderenum, Integer pageNum, Integer pageSize);
 }

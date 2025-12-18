@@ -87,14 +87,21 @@ public class BookServiceImpl implements BookService {
     }
 
     @Override
-    public Optional<Book> findById(Long id) {
-        return bookRepository.findById(id);
+    public Book findById(Long id) {
+        return bookRepository.findById(id).orElseThrow(()->new BookNotFoundException(id));
     }
 
     @Override
     public void delete(Long id) {
-        Book book = bookRepository.findById(id).orElseThrow(() -> new BookNotFoundException(id));
+        Book book = findById(id);
         bookRepository.deleteById(id);
+    }
+
+    @Override
+    public void like(Long id) {
+        Book book = findById(id);
+        book.setDop(!book.isDop());
+        bookRepository.save(book);
     }
 
     @Override

@@ -1,30 +1,155 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
-<h2>Edit or delete a Author-:</h2>
-<div th:each="author : ${authors}" style="text-align: center">
-    <div class="book-option">
-        AuthorName: <span th:text="${author.getName()}"></span> | LastName: <span th:text="${author.getSurname()}"></span> | Bio: <span
-            th:text="${author.getBiography()}"></span> | C: <span
-            th:text="${author.getCountry()} + ' Gender' + ${author.getGenderenum()}"></span>
-        <div class="book-actions">
-            <a th:href="@{'/author/edit-form/{id}' (id=${author.id})}" class="btn btn-sm btn-info">
-                <i class="fas fa-pencil-alt"></i> Edit
-            </a>
-            <form th:action="@{'/author/delete/{id}' (id=${author.id})}" th:method="DELETE" style="display: inline;">
-                <button type="submit" class="btn btn-sm btn-danger">
-                    <i class="fas fa-trash"></i> Delete
-                </button>
-            </form>
+<div xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+    <head>
+        <meta charset="UTF-8"/>
+        <title>Products</title>
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+              integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+        <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+                integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+                crossorigin="anonymous"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
+                integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
+                crossorigin="anonymous"></script>
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+                integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+                crossorigin="anonymous"></script>
+        <script src="https://kit.fontawesome.com/e59232f0a1.js" crossorigin="anonymous"></script>
+    </head>
+
+
+
+    <section class="jumbotron text-center">
+        <div class="container">
+            <h1 class="jumbotron-heading">WEB PROGRAMMING </h1>
+            <h2 class="jumbotron-heading">Mario Stanojkovski 223152</h2>
+            <h3 class="jumbotron-heading">Laboratory exercise Group-A 2025/2026</h3>
+
+        </div>
+    </section>
+<div class="container mt-4">
+    <form th:action="@{/author}" th:method="GET">
+        <div class="row g-3 align-items-end">
+            <div class="col-md-3 form-group">
+                <label for="searchname" class="form-label">Search by Name:</label>
+                <input type="text" th:value="${name}" class="form-control" id="searchname"
+                       placeholder="Enter author's name" name="name">
+            </div>
+            <div class="col-md-3 form-group">
+                <label for="searchsurname" class="form-label">Search by Surname:</label>
+                <input type="text" th:value="${surname}" class="form-control" id="searchsurname"
+                       placeholder="Enter author's surname" name="surname">
+            </div>
+            <div class="col-md-3 form-group">
+                <label for="searchcountry" class="form-label">Search by Country:</label>
+                <input type="text" th:value="${country}" class="form-control" id="searchcountry"
+                       placeholder="Enter author's country" name="country">
+            </div>
+            <div class="col-md-3 form-group">
+                <label for="Genre" class="form-label">Search by Gender:</label>
+                <select name="genderenum" id="Genre" class="form-control">
+                    <option value="">All genders:</option>
+                    <option th:each="gen : ${genderenums}"
+                            th:value="${gen.name()}"
+                            th:text="${gen.name()}"
+                            th:selected="${genderenum != null && genderenum == gen.name()}">
+                    </option>
+                </select>
+            </div>
+
+            <div class="col-12 mb-1">
+                <button class="btn btn-primary w-100" type="submit">Search</button>
+            </div>
+        </div>
+    </form>
+</div>
+
+
+<div class="container mb-4">
+    <div class="row">
+        <div class="col-12" th:if="${page.getTotalElements() > 0}">
+            <div class="table-responsive">
+                <table class="table table-striped">
+                    <thead>
+                    <tr>
+                        <th scope="col">Name</th>
+                        <th scope="col">Surname</th>
+                        <th scope="col">Country</th>
+                        <th scope="col">Biography</th>
+                        <th scope="col">Gender</th>
+
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr th:each="author : ${page.getContent()}" class="product">
+                        <td th:text="${author.name}">[author.name]</td>
+                        <td th:text="${author.surname}">[author.surname]</td>
+                        <td th:text="${author.country}">[author.country]</td>
+                        <td th:text="${author.biography}">[author.biography]</td>
+                        <td th:text="${author.genderenum}">[author.genderenum]</td>
+                        <td class="text-right">
+                            <th:block  sec:authorize="hasRole('ADMIN')">
+                                <form th:action="@{'/author/delete/{id}' (id=${author.getId()})}"
+                                      th:method="DELETE">
+                                    <button type="submit"
+                                            class="btn btn-sm btn-danger delete-product">
+                                        <i class="fa fa-trash"></i> Delete
+                                    </button>
+                                </form>
+                            </th:block>
+                            <th:block sec:authorize="hasRole('ADMIN')">
+                                <a th:href="@{'/author/edit-form/{id}' (id=${author.getId()})}"
+                                   class="btn btn-sm btn-warning edit-product">
+                                    <i class="fa fa-edit"></i> Edit
+                                </a>
+                            </th:block>
+                        </td>
+
+                    </tr>
+                    </tbody>
+                </table>
+                <div th:include="fragments/paging :: pageSection(${page})"></div>
+            </div>
+        </div>
+        <div class="col mb-3">
+            <div class="row">
+                <div class="col-sm-12 col-md-12">
+                    <a  sec:authorize="hasRole('ADMIN')"  href="/author/add-form" class="btn btn-block btn-dark add-product-btn">
+                        Add new author
+                    </a>
+                </div>
+            </div>
+        </div>
+        <div class="col mb-3">
+            <div class="row">
+                <div class="col-sm-12 col-md-12">
+                    <a href="/" class="btn btn-block btn-dark add-product-btn">
+                        View Books's page
+                    </a>
+                </div>
+            </div>
         </div>
     </div>
 </div>
-<a href="/author/add-form" class="btn btn-dark btn-lg w-100 mb-3">
-    Add new author
-</a>
-</body>
-</html>
+    <nav class="navbar navbar-expand-lg bg-light">
+        <div class="container m-4">
+            <a class="navbar-brand" href="/">My WP 2025 App</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link btn btn-info mx-2" href="/">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link btn btn-info mx-2" href="/login">Login</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link btn btn-info mx-2" href="/logout">Logout</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+</div>
+

@@ -1,5 +1,6 @@
 package mk.ukim.finki.wp.lab.model;
-import  mk.ukim.finki.wp.lab.model.Book;
+
+import mk.ukim.finki.wp.lab.model.Book;
 import jakarta.persistence.Entity;
 import jakarta.persistence.OneToMany;
 import lombok.AllArgsConstructor;
@@ -23,17 +24,18 @@ public class Author {
     private String surname;
     private String country;
     private String biography;
+    @Enumerated(EnumType.STRING)
     private Genderenum genderenum;
 
 //    @OneToMany(mappedBy = "author")
 //    private List<Book> books;
 
-    public Author(String name, String surname,String country,String biography,Genderenum genderenum) {
+    public Author(String name, String surname, String country, String biography, Genderenum genderenum) {
         this.name = name;
         this.surname = surname;
         this.country = country;
         this.biography = biography;
-        this.genderenum=genderenum;
+        this.genderenum = genderenum;
     }
 
 }

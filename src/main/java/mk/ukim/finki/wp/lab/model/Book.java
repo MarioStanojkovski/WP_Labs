@@ -1,5 +1,6 @@
 package mk.ukim.finki.wp.lab.model;
 
+import jakarta.annotation.Nullable;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -21,14 +22,24 @@ public class Book {
 
     @ManyToOne
     private Genre genre;
+
+    @Nullable
     @ManyToOne
     private Author author;
+
+//    public boolean isDop() {
+//        return dop;
+//    }
+
+    private boolean dop = false;
 
     public Book(String title, Genre genre, double averageRating, Author author) {
         this.title = title;
         this.genre = genre;
         this.averageRating = averageRating;
         this.author = author;
+
+
     }
 
 

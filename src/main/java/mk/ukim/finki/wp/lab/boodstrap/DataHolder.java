@@ -52,6 +52,7 @@ public class DataHolder {
         genres.add(new Genre("Action", "bambam"));
         genres.add(new Genre("Comedy", "hahaha"));
         genres.add(new Genre("Drama", "wuwuwq"));
+        genres.add(new Genre("Dragon", "DD"));
         if (genreRepository.findAll().isEmpty()) {
             genreRepository.saveAll(genres);
         }
@@ -65,7 +66,11 @@ public class DataHolder {
         books.add(new Book("Book12", genres.get(0), 5. + 1, authors.get(0)));
 
         if (bookRepository.findAll().isEmpty()) {
-            bookRepository.saveAll(books);
+            try {
+                bookRepository.saveAll(books);
+            } catch (Exception e) {
+                // Log e.getMessage() or e.printStackTrace() to see the exact error
+            }
         }
 
 

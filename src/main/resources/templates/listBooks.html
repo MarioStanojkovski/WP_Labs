@@ -3,7 +3,8 @@
         <meta charset="UTF-8"/>
         <title>Products</title>
         <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
-              integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+              integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T"
+              crossorigin="anonymous">
         <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
                 integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
                 crossorigin="anonymous"></script>
@@ -17,11 +18,11 @@
     </head>
 
 
-
     <section class="jumbotron text-center">
         <div class="container">
             <h1 class="jumbotron-heading">WEB PROGRAMMING </h1>
-            <h3 class="jumbotron-heading">All books</h3>
+            <h3 class="jumbotron-heading">Laboratory exercise Group-A 2025/2026</h3>
+            <h2 class="jumbotron-heading">Mario Stanojkovski 223152</h2>
         </div>
     </section>
 
@@ -31,7 +32,7 @@
                 <div class="col-md-6 form-group">
                     <label for="searchTitle" class="form-label">Search by Title:</label>
                     <input type="text" th:value="${title}" class="form-control" id="searchTitle"
-                               placeholder="Enter product name" name="title">
+                           placeholder="Enter book title" name="title">
                 </div>
 
                 <div class="col-md-3 form-group">
@@ -89,12 +90,8 @@
                             <td th:text="${book.getAuthor()!= null} ? ${book.getAuthor().getName()}+' '+${book.getAuthor().getSurname()} : 'No author'">
                                 [book.author]
                             </td>
-<!--                            <td th:text="${product.getCategory() != null} ? ${product.getCategory().getName()} : 'No category'">-->
-<!--                                [product.category]-->
-<!--                            </td>-->
-
                             <td class="text-right">
-                                <th:block>
+                                <th:block sec:authorize="hasRole('ADMIN')">
                                     <form th:action="@{'/books/delete/{id}' (id=${book.getId()})}"
                                           th:method="DELETE">
                                         <button type="submit"
@@ -103,31 +100,24 @@
                                         </button>
                                     </form>
                                 </th:block>
-                                <th:block>
+                                <th:block sec:authorize="hasRole('ADMIN')">
                                     <a th:href="@{'/books/edit-form/{id}' (id=${book.getId()})}"
                                        class="btn btn-sm btn-warning edit-product">
                                         <i class="fa fa-edit"></i> Edit
                                     </a>
                                 </th:block>
-<!--                                <form th:if="${product.isActive()}"-->
-<!--                                      th:action="@{'/shopping-cart/add-product/{id}' (id=${product.getId()})}"-->
-<!--                                      th:method="POST">-->
-<!--                                    <button type="submit" class="btn btn-sm btn-success">-->
-<!--                                        <i class="fa fa-shopping-cart"></i> Add product to cart-->
-<!--                                    </button>-->
-<!--                                </form>-->
+                                <th:block sec:authorize="hasRole('USER')">
+                                    <form th:action="@{'/books/like-status/{id}' (id=${book.getId()})}"
+                                          th:method="POST">
+                                        <button type="submit"
+                                                th:classappend="${book.isDop()} ? 'btn-secondary' : 'btn-success'"
+                                                class="btn btn-sm">
+                                            <i th:class="${book.isDop()} ? 'fa fa-ban' : 'fa fa-check'"></i>
+                                            <span th:text="${book.isDop()} ? 'Dislike' : 'Like  '"></span>
+                                        </button>
+                                    </form>
 
-<!--                                <form th:action="@{'/products/toggle-status/{id}' (id=${product.getId()})}"-->
-<!--                                      th:method="POST">-->
-<!--                                     -->
-<!--                                    <button type="submit"-->
-<!--                                            th:classappend="${product.isActive()} ? 'btn-secondary' : 'btn-success'"-->
-<!--                                            class="btn btn-sm">-->
-<!--                                        <i th:class="${product.isActive()} ? 'fa fa-ban' : 'fa fa-check'"></i>-->
-<!--                                        <span th:text="${product.isActive()} ? 'Deactivate' : 'Activate'"></span>-->
-<!--                                    </button>-->
-<!--                                </form>-->
-
+                                </th:block>
                             </td>
 
                         </tr>
@@ -136,7 +126,7 @@
                     <div th:include="fragments/paging :: pageSection(${page})"></div>
                 </div>
             </div>
-            <div class="col mb-3">
+            <div sec:authorize="hasRole('ADMIN')"class="col mb-3">
                 <div class="row">
                     <div class="col-sm-12 col-md-12">
                         <a href="/books/add-form" class="btn btn-block btn-dark add-product-btn">
@@ -145,6 +135,36 @@
                     </div>
                 </div>
             </div>
+            <div class="col mb-3">
+                <div class="row">
+                    <div class="col-sm-12 col-md-12">
+                        <a href="/author" class="btn btn-block btn-dark add-product-btn">
+                            View Author's page
+                        </a>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
+    <nav class="navbar navbar-expand-lg bg-light">
+        <div class="container m-4">
+            <a class="navbar-brand" href="/">My WP 2025 App</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link btn btn-info mx-2" href="/">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link btn btn-info mx-2" href="/login">Login</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link btn btn-info mx-2" href="/logout">Logout</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
 </div>

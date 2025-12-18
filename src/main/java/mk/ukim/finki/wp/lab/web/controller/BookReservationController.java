@@ -34,7 +34,7 @@ public class BookReservationController {
             @RequestParam("numCopies") int numCopies
     ) {
 
-        Book selectedBook = bookService.findById(selectedBookId).orElseThrow(() -> new IllegalArgumentException("Book not found"));
+        Book selectedBook = bookService.findById(selectedBookId);
         bookReservationService.placeReservation(selectedBook.getTitle(),readerName,readerAddress,numCopies,selectedBook.getAuthor());
         model.addAttribute("book", selectedBook);
         model.addAttribute("numCopies", numCopies);

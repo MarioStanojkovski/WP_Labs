@@ -25,10 +25,11 @@ public interface BookService {
         double averageRating,
         Long authorId
     );
-    Optional<Book> findById(Long id);
+   Book findById(Long id);
 
     void delete(Long id);
     List<Book> searchBooksbyGenres (Long genreId);
     Page<Book> find(String title,Long authorId, Long genreId, Integer pageNum, Integer pageSize);
 
+    void like(Long id);
 }
